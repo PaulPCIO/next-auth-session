@@ -1,4 +1,4 @@
-import { Provider } from 'next-auth/client';
+import { getSession, Provider } from 'next-auth/client';
 import 'antd/dist/antd.css';
 
 import './styles.css';
