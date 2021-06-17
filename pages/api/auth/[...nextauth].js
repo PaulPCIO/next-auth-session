@@ -1,5 +1,5 @@
-import NextAuth from "next-auth"
-import Providers from "next-auth/providers"
+import NextAuth from 'next-auth';
+import Providers from 'next-auth/providers';
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
@@ -7,42 +7,13 @@ export default NextAuth({
   // https://next-auth.js.org/configuration/providers
   providers: [
     Providers.Email({
-      server: process.env.EMAIL_SERVER,
+      server: '',
       from: process.env.EMAIL_FROM,
-    }),
-    // Temporarily removing the Apple provider from the demo site as the
-    // callback URL for it needs updating due to Vercel changing domains
-    /*
-    Providers.Apple({
-      clientId: process.env.APPLE_ID,
-      clientSecret: {
-        appleId: process.env.APPLE_ID,
-        teamId: process.env.APPLE_TEAM_ID,
-        privateKey: process.env.APPLE_PRIVATE_KEY,
-        keyId: process.env.APPLE_KEY_ID,
+      async generateVerificationToken() {
+        // for the sake of testing this will be a fixed value:
+        return 'TEST';
       },
-    }),
-    */
-    Providers.Facebook({
-      clientId: process.env.FACEBOOK_ID,
-      clientSecret: process.env.FACEBOOK_SECRET,
-    }),
-    Providers.GitHub({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
-    }),
-    Providers.Google({
-      clientId: process.env.GOOGLE_ID,
-      clientSecret: process.env.GOOGLE_SECRET,
-    }),
-    Providers.Twitter({
-      clientId: process.env.TWITTER_ID,
-      clientSecret: process.env.TWITTER_SECRET,
-    }),
-    Providers.Auth0({
-      clientId: process.env.AUTH0_ID,
-      clientSecret: process.env.AUTH0_SECRET,
-      domain: process.env.AUTH0_DOMAIN,
+      maxAge: 10 * 60, // 10 mins
     }),
   ],
   // Database optional. MySQL, Maria DB, Postgres and MongoDB are supported.
@@ -57,7 +28,9 @@ export default NextAuth({
   // It is used to sign cookies and to sign and encrypt JSON Web Tokens, unless
   // a separate secret is defined explicitly for encrypting the JWT.
   secret: process.env.SECRET,
-
+  pages: {
+    signIn: '/login', // this will allow us to use our own login page,
+  },
   session: {
     // Use JSON Web Tokens for session instead of database sessions.
     // This option can be used with or without a database for users/accounts.
@@ -113,11 +86,11 @@ export default NextAuth({
   // Events are useful for logging
   // https://next-auth.js.org/configuration/events
   events: {},
-  
+
   // You can set the theme to 'light', 'dark' or use 'auto' to default to the
   // whatever prefers-color-scheme is set to in the browser. Default is 'auto'
   theme: 'light',
 
   // Enable debug messages in the console if you are having problems
   debug: false,
-})
+});
